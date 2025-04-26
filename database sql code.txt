@@ -1,0 +1,98 @@
+CREATE DATABASE pc_monitoring;
+USE pc_monitoring;
+
+-- PC Status Table
+CREATE TABLE pc_status (
+    pc_id INT PRIMARY KEY,
+    lab_id INT NOT NULL,
+    status ENUM('online', 'offline') DEFAULT 'offline',
+    last_check DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Users Table (for regular users)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Admins Table (for owner/admin)
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Archive Table
+CREATE TABLE pc_status_archive (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pc_id INT NOT NULL,
+    lab_id INT NOT NULL,
+    status ENUM('online', 'offline') NOT NULL,
+    timestamp DATETIME NOT NULL,
+    FOREIGN KEY (pc_id) REFERENCES pc_status(pc_id)
+);
+
+-- Insert 120 PCs: 80 online, 40 offline, across 4 labs (30 PCs per lab)
+-- Lab 1: 30 PCs (20 online, 10 offline)
+INSERT INTO pc_status (pc_id, lab_id, status) VALUES
+(1, 1, 'online'), (2, 1, 'offline'), (3, 1, 'online'), (4, 1, 'online'), (5, 1, 'offline'),
+(6, 1, 'online'), (7, 1, 'online'), (8, 1, 'offline'), (9, 1, 'online'), (10, 1, 'online'),
+(11, 1, 'online'), (12, 1, 'offline'), (13, 1, 'online'), (14, 1, 'online'), (15, 1, 'online'),
+(16, 1, 'offline'), (17, 1, 'online'), (18, 1, 'online'), (19, 1, 'online'), (20, 1, 'offline'),
+(21, 1, 'online'), (22, 1, 'online'), (23, 1, 'offline'), (24, 1, 'online'), (25, 1, 'online'),
+(26, 1, 'online'), (27, 1, 'offline'), (28, 1, 'online'), (29, 1, 'online'), (30, 1, 'offline');
+
+-- Lab 2: 30 PCs (20 online, 10 offline)
+INSERT INTO pc_status (pc_id, lab_id, status) VALUES
+(31, 2, 'offline'), (32, 2, 'online'), (33, 2, 'online'), (34, 2, 'online'), (35, 2, 'offline'),
+(36, 2, 'online'), (37, 2, 'online'), (38, 2, 'offline'), (39, 2, 'online'), (40, 2, 'online'),
+(41, 2, 'online'), (42, 2, 'offline'), (43, 2, 'online'), (44, 2, 'online'), (45, 2, 'online'),
+(46, 2, 'offline'), (47, 2, 'online'), (48, 2, 'online'), (49, 2, 'online'), (50, 2, 'offline'),
+(51, 2, 'online'), (52, 2, 'online'), (53, 2, 'offline'), (54, 2, 'online'), (55, 2, 'online'),
+(56, 2, 'online'), (57, 2, 'offline'), (58, 2, 'online'), (59, 2, 'online'), (60, 2, 'online');
+
+-- Lab 3: 30 PCs (20 online, 10 offline)
+INSERT INTO pc_status (pc_id, lab_id, status) VALUES
+(61, 3, 'online'), (62, 3, 'offline'), (63, 3, 'online'), (64, 3, 'online'), (65, 3, 'offline'),
+(66, 3, 'online'), (67, 3, 'online'), (68, 3, 'offline'), (69, 3, 'online'), (70, 3, 'online'),
+(71, 3, 'online'), (72, 3, 'offline'), (73, 3, 'online'), (74, 3, 'online'), (75, 3, 'online'),
+(76, 3, 'offline'), (77, 3, 'online'), (78, 3, 'online'), (79, 3, 'online'), (80, 3, 'offline'),
+(81, 3, 'online'), (82, 3, 'online'), (83, 3, 'offline'), (84, 3, 'online'), (85, 3, 'online'),
+(86, 3, 'online'), (87, 3, 'offline'), (88, 3, 'online'), (89, 3, 'online'), (90, 3, 'online');
+
+-- Lab 4: 30 PCs (20 online, 10 offline)
+INSERT INTO pc_status (pc_id, lab_id, status) VALUES
+(91, 4, 'offline'), (92, 4, 'online'), (93, 4, 'online'), (94, 4, 'online'), (95, 4, 'offline'),
+(96, 4, 'online'), (97, 4, 'online'), (98, 4, 'offline'), (99, 4, 'online'), (100, 4, 'online'),
+(101, 4, 'online'), (102, 4, 'offline'), (103, 4, 'online'), (104, 4, 'online'), (105, 4, 'online'),
+(106, 4, 'offline'), (107, 4, 'online'), (108, 4, 'online'), (109, 4, 'online'), (110, 4, 'offline'),
+(111, 4, 'online'), (112, 4, 'online'), (113, 4, 'offline'), (114, 4, 'online'), (115, 4, 'online'),
+(116, 4, 'online'), (117, 4, 'offline'), (118, 4, 'online'), (119, 4, 'online'), (120, 4, 'online');
+
+-- Insert more sample Archive Data for testing (20 records)
+INSERT INTO pc_status_archive (pc_id, lab_id, status, timestamp) VALUES
+(1, 1, 'online', '2025-03-13 10:00:00'),
+(31, 2, 'offline', '2025-03-13 10:05:00'),
+(61, 3, 'online', '2025-03-13 10:10:00'),
+(91, 4, 'offline', '2025-03-13 10:15:00'),
+(2, 1, 'offline', '2025-03-13 10:20:00'),
+(32, 2, 'online', '2025-03-13 10:25:00'),
+(62, 3, 'offline', '2025-03-13 10:30:00'),
+(92, 4, 'online', '2025-03-13 10:35:00'),
+(3, 1, 'online', '2025-03-13 10:40:00'),
+(33, 2, 'online', '2025-03-13 10:45:00'),
+(63, 3, 'online', '2025-03-13 10:50:00'),
+(93, 4, 'online', '2025-03-13 10:55:00'),
+(4, 1, 'online', '2025-03-13 11:00:00'),
+(34, 2, 'offline', '2025-03-13 11:05:00'),
+(64, 3, 'online', '2025-03-13 11:10:00'),
+(94, 4, 'offline', '2025-03-13 11:15:00'),
+(5, 1, 'offline', '2025-03-13 11:20:00'),
+(35, 2, 'offline', '2025-03-13 11:25:00'),
+(65, 3, 'offline', '2025-03-13 11:30:00'),
+(95, 4, 'offline', '2025-03-13 11:35:00');
+
+-- Sample Admin (password hashed with password_hash('admin123', PASSWORD_DEFAULT))
+INSERT INTO admins (username, password) VALUES
+('admin1', '$2y$10$5b7k2x7q3QzY7z1z5y6x6uY6x7z1z5y6x7z1z5y6x7z1z5y6x7z1');
